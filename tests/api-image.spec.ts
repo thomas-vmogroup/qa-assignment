@@ -6,16 +6,20 @@ import { Path } from "../const/Path";
 import { MimeType } from "../const/MimeType";
 import { Utilities } from "../util/Utilities"
 import { CommonAction } from "../actions/CommonAction";
+import { ImageAction } from "../actions/ImageAction";
 
 let action;
 let Util;
 let commonAction;
+let imageAction;
 
 test.describe('Upload image', () => {
-    test.beforeAll(async ({ request }) => {
-        action = new BaseAPI(request);
+    test.beforeEach(async ({ request }) => {
+        imageAction = new ImageAction(request)
+        // action = new BaseAPI(request);
         commonAction = new CommonAction(request);
         Util = new Utilities();
+
     });
 
     /*
@@ -33,14 +37,25 @@ test.describe('Upload image', () => {
     test.only('Should allow guest to upload an image', async () => {
         const imageList = Util.getFilesFromFolder(Path.IMAGES, []);
         const file = Util.getRandomItemFromArrayList(imageList);
-        const response = await action.doPost(EndPoint.IMAGE_ENDPOINT, file, MimeType.IMAGE);
-        const body = JSON.parse(await response.text());
-        expect(response.ok()).toBeTruthy();
-        expect(response.status()).toBe(200);
-        expect(body).toHaveProperty("image");
-        commonAction.verifyTheImageIsRightFormat(body.image);
-        commonAction.verifyTheImageIsAvailabe(body.image);
+        imageAction.uploadAnImage(file);
+        imageAction.verifyOkStatusCode();
+        imageAction.verifyHaveProperty("image");
+        imageAction.verifyTheImageIsRightFormat();
+        commonAction.verifyTheImageIsAvailabe();
     });
+
+    // test.only('Should allow guest to upload an image', async () => {
+    //     const imageList = Util.getFilesFromFolder(Path.IMAGES, []);
+    //     const file = Util.getRandomItemFromArrayList(imageList);
+    //     const response = await action.doPost(EndPoint.IMAGE_ENDPOINT, file, MimeType.IMAGE);
+    //     const bodyText = JSON.parse(await response.text());
+    //     console.log("Response: " + bodyText)
+    //     expect(response.ok()).toBeTruthy();
+    //     expect(response.status()).toBe(200);
+    //     expect(bodyText).toHaveProperty("image");
+    //     commonAction.verifyTheImageIsRightFormat(bodyText.image);
+    //     commonAction.verifyTheImageIsAvailabe(bodyText.image);
+    // });
 
 
     /*
