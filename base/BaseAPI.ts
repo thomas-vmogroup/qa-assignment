@@ -1,0 +1,30 @@
+import { APIRequestContext, APIResponse } from "@playwright/test";
+import fs from "fs";
+
+export class BaseAPI {
+
+    url: string;
+    request: APIRequestContext
+
+
+    constructor(request: APIRequestContext) {
+        this.request = request;
+    }
+
+    async doPost(endpoint: string, file: string, mimeType: string): Promise<APIResponse> {
+        const image = fs.readFileSync(file);
+        const response = await this.request.post(endpoint, {
+            headers: {
+            },
+            multipart: {
+                file: {
+                    name: file,
+                    mimeType: mimeType,
+                    buffer: image,
+                }
+            },
+        });
+        return response;
+    }
+
+}
