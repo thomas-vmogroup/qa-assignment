@@ -14,5 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.36.1"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10"
   }
 }
