@@ -16,7 +16,6 @@ let imageAction;
 test.describe('Upload image', () => {
     test.beforeEach(async ({ request }) => {
         imageAction = new ImageAction(request)
-        // action = new BaseAPI(request);
         commonAction = new CommonAction(request);
         Util = new Utilities();
 
@@ -34,14 +33,15 @@ test.describe('Upload image', () => {
         - Verify the permanen file format
     */
 
-    test.only('Should allow guest to upload an image', async () => {
+    test('Should allow guest to upload an image', async () => {
         const imageList = Util.getFilesFromFolder(Path.IMAGES, []);
         const file = Util.getRandomItemFromArrayList(imageList);
-        imageAction.uploadAnImage(file);
-        imageAction.verifyOkStatusCode();
+        await imageAction.uploadAnImage(file);
+        // imageAction.verifyOkStatusCode();
+        await commonAction.verifyStatusCodeIs(200, imageAction.getTheResponseBody());
         imageAction.verifyHaveProperty("image");
         imageAction.verifyTheImageIsRightFormat();
-        commonAction.verifyTheImageIsAvailabe();
+        await commonAction.verifyTheImageIsAvailabe(imageAction.getTheResponseBodyJson());
     });
 
     // test.only('Should allow guest to upload an image', async () => {
@@ -69,9 +69,8 @@ test.describe('Upload image', () => {
 
     test('Should not allow guest to upload the file is not a picture', async () => {
         const file = path.resolve(Path.OTHERS, "username.csv");
-        const response = await action.doPost(EndPoint.IMAGE_ENDPOINT, file, MimeType.IMAGE);
-        const body = JSON.parse(await response.text());
-        expect(response.status()).toBe(500);
-        expect(body).toHaveProperty("err", "File isn' an image");
+        await imageAction.uploadAnImage(file);
+        await commonAction.verifyStatusCodeIs(500, imageAction.getTheResponseBody());
+        await imageAction.verifyErrorMessage()
     });
 });

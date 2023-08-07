@@ -6,6 +6,7 @@ export class BaseAPI {
     url: string;
     request: APIRequestContext
     response: APIResponse
+    bodyJson
 
 
     constructor(request: APIRequestContext) {
