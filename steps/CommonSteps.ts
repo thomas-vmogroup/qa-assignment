@@ -18,7 +18,8 @@ export const CommonSteps = class CommonSteps extends BaseAPI {
         expect(bodyJson).toHaveProperty(propety);
     }
 
-    verifyErrorMessage(err: string) {
-        expect(this.bodyJson).toHaveProperty("err", err);
+    async verifyErrorMessage(err: string, response) {
+        const bodyJson = JSON.parse(await response.text());
+        expect(bodyJson).toHaveProperty("err", err);
     }
 }

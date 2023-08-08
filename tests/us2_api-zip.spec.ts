@@ -43,7 +43,7 @@ Postcondition:
     - temp folder should be deleted
 */
     test('Should allow guest to upload an zip file contain multiple image files', async ({ }) => {
-        const zipFilePath = path.resolve(Path.ZIPS, "images.zip");
+        const zipFilePath = path.resolve(Path.ZIPS, "images-only.zip");
         const lisFileNameFromZipFile = await Util.readZipArchive(zipFilePath)
 
         const response = await zipSteps.uploadAZipFile(zipFilePath);
@@ -69,13 +69,13 @@ Postcondition:
     Test Step: 
         - Provide the file is not a zip file
         - Send the post request to upload the zip file
-        - Verify the status code should be 500
+        - Verify the status code should be 403
         - Verify the body response should have "err" field with the message: File isn' a zip
     */
     test('Should not allow guest to upload the file is not a zip', async () => {
         const file = path.resolve(Path.OTHERS, "username.csv");
         const response = await zipSteps.uploadAZipFile(file);
-        await commonSteps.verifyStatusCodeIs(500, response);
-        await commonSteps.verifyErrorMessage("File isn' a zip")
+        await commonSteps.verifyStatusCodeIs(403, response);
+        await commonSteps.verifyErrorMessage("File isn' a zip", response);
     });
 });

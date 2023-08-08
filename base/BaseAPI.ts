@@ -6,13 +6,11 @@ export class BaseAPI {
     url: string;
     request: APIRequestContext
     response: APIResponse
-    bodyJson
 
     constructor(request?: APIRequestContext) {
         if (request)
             this.request = request;
     }
-
 
     //POST|method
     async doPost(endpoint: string, file: string, mimeType: string): Promise<APIResponse> {
