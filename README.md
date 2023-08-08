@@ -25,7 +25,7 @@ A take-home automation testing assignment for QA interview.
 * Go to the Project root directory and run command: `npm test`
 
 ## Run Single Spec and show the report
-* Go to the Project root directory and run command: `npx playwright test tests/api-image.spec.ts && npx playwright show-report`
+* Go to the Project root directory and run command: e.g:  `npx playwright test tests/api-image.spec.ts && npx playwright show-report`
 
 ## How to view default Playwright HTML report
 * After runing finished one html report would be automatically gennerated and displayed if has any case failed
@@ -33,4 +33,4 @@ A take-home automation testing assignment for QA interview.
 * Go to the Project root directory: `./playwright-report/index.html`
 
 ### Playwright HTML Test Report
-![Playwright HTML Test Report](./readme-images/html-test-report.PNG?raw=true "Playwright HTML Test Report")
+![Playwright HTML Test Report](./resources/html-test-report.PNG?raw=true "Playwright HTML Test Report")
