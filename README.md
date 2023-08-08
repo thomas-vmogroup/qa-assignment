@@ -33,4 +33,4 @@ A take-home automation testing assignment for QA interview.
 * Go to the Project root directory: `./playwright-report/index.html`
 
 ### Playwright HTML Test Report
-![Playwright HTML Test Report](./readme-images/html-test-report.PNG?raw=true "Playwright HTML Test Report")
+![Playwright HTML Test Report](./resources/html-test-report.PNG?raw=true "Playwright HTML Test Report")

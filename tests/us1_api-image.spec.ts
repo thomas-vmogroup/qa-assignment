@@ -56,7 +56,6 @@ test.describe('Upload image', () => {
     Precondition:
         - A non image file is provided (e.g: file.csv)
     Test Step: 
-        - Provide the file is not a picture file
         - Send the post request to upload the image
         - Verify the status code should be 500
         - Verify the body response should have "err" field with the message: File isn' an image
