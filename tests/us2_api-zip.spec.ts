@@ -1,9 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import path from "path";
-import { BaseAPI } from "../base/BaseAPI"
-import { EndPoint } from "../const/EndPoint";
 import { Path } from "../const/Path";
-import { MimeType } from "../const/MimeType";
 import { Utilities } from "../util/Utilities";
 import { CommonSteps } from "../steps/CommonSteps";
 import { ZipSteps } from "../steps/ZipSteps";
@@ -15,10 +12,18 @@ let commonSteps;
 let zipSteps;
 let imageSteps;
 
+/*
+    User Story 2 - In order to save my time from uploading my pictures multiple times via 
+    https://assessement.onrender.com/api/zip API service: As an Anonymous user, I want to attach a zip file 
+    containing multiple images and I want each of these uploaded images to have a permanent link.
+*/
 
 test.describe('Upload zip file', () => {
     test.beforeEach(async ({ request }) => {
-
+        zipSteps = new ZipSteps(request)
+        commonSteps = new CommonSteps(request);
+        Util = new Utilities();
+        imageSteps = new ImageSteps(request);
     });
 
 
@@ -37,12 +42,7 @@ Test Step:
 Postcondition:
     - temp folder should be deleted
 */
-    test.only('Should allow guest to upload an zip file contain multiple image files', async ({ request }) => {
-        zipSteps = new ZipSteps(request)
-        commonSteps = new CommonSteps(request);
-        Util = new Utilities();
-        imageSteps = new ImageSteps(request);
-
+    test('Should allow guest to upload an zip file contain multiple image files', async ({ }) => {
         const zipFilePath = path.resolve(Path.ZIPS, "images.zip");
         const lisFileNameFromZipFile = await Util.readZipArchive(zipFilePath)
 
@@ -57,13 +57,25 @@ Postcondition:
             await imageSteps.verifyTheImageIsAvailabe(responseImageList[i]);
         }
 
-        // await zipSteps.verifyZipfileAndResponeImagesAreCorresponding(lisFileNameFromZipFile)
-        console.log(lisFileNameFromZipFile.length + "Input images: " + lisFileNameFromZipFile);
-        console.log(responseImageList.length + "Response images: " + responseImageList);
+        await zipSteps.verifyZipfileAndResponeImagesAreCorresponding(lisFileNameFromZipFile)
 
 
     });
 
-
-    //"File isn' a zip"
+    /*
+    Tescase 02: Should not allow guest to upload the file is not a zip file
+    Precondition:
+        - A non zip file is provided (e.g: file.csv)
+    Test Step: 
+        - Provide the file is not a zip file
+        - Send the post request to upload the zip file
+        - Verify the status code should be 500
+        - Verify the body response should have "err" field with the message: File isn' a zip
+    */
+    test('Should not allow guest to upload the file is not a zip', async () => {
+        const file = path.resolve(Path.OTHERS, "username.csv");
+        const response = await zipSteps.uploadAZipFile(file);
+        await commonSteps.verifyStatusCodeIs(500, response);
+        await commonSteps.verifyErrorMessage("File isn' a zip")
+    });
 });

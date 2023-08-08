@@ -27,8 +27,15 @@ export const ZipSteps = class ZipSteps extends BaseAPI {
 
     async verifyZipfileAndResponeImagesAreCorresponding(lisFileNameFromZipFile) {
         const responseImageList = await this.getTheResponseImageList();
-        console.log("lisFileNameFromZipFile" + lisFileNameFromZipFile);
-        console.log("responseImageList" + responseImageList);
+        expect(lisFileNameFromZipFile.length).toBe(responseImageList.length)
+        for (var i = 0; i < responseImageList.length; i++) {
+            expect(this.getTheFileExtention(lisFileNameFromZipFile[i])).toBe(this.getTheFileExtention(responseImageList[i]))
+        }
+    }
+
+    //Get the file extention
+    private getTheFileExtention(fileName: string) {
+        return fileName.split(".").pop();
     }
 
 }

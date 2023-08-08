@@ -10,11 +10,9 @@ export const ImageSteps = class ImageSteps extends BaseAPI {
     // }
     // response: APIResponse;
     imageLinkRegex = /https:\/\/assessement\.onrender\.com\/images\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
-    bodyJson;
 
     async uploadAnImage(file) {
         this.response = await this.doPost(EndPoint.IMAGE_ENDPOINT, file, MimeType.IMAGE);
-        this.bodyJson = JSON.parse(await this.response.text());
         return this.response;
     }
 
