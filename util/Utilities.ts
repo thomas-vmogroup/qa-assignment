@@ -22,8 +22,6 @@ export const Utilities = class Utilities {
         return files_;
     };
 
-
-
     // Get the list of data from 1 folder
     getFilesFromFolder(dir, files_): string[] {
         files_ = files_ || [];

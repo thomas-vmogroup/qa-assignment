@@ -8,13 +8,15 @@ export class BaseAPI {
     response: APIResponse
     bodyJson
 
-
-    constructor(request: APIRequestContext) {
-        this.request = request;
+    constructor(request?: APIRequestContext) {
+        if (request)
+            this.request = request;
     }
+
 
     //POST|method
     async doPost(endpoint: string, file: string, mimeType: string): Promise<APIResponse> {
+        console.log("POST | " + endpoint)
         const image = fs.readFileSync(file);
         const response = await this.request.post(endpoint, {
             headers: {
@@ -33,6 +35,7 @@ export class BaseAPI {
 
     //GET|method
     async doGet(endpoint: string): Promise<APIResponse> {
+        console.log("GET | " + endpoint)
         const response = await this.request.get(endpoint)
         this.response = response;
         return response;
