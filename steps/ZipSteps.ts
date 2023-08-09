@@ -2,9 +2,9 @@ import { expect, APIRequestContext } from "@playwright/test";
 import { BaseAPI } from "../base/BaseAPI";
 import { EndPoint } from "../const/EndPoint";
 import { MimeType } from "../const/MimeType";
-import { ImageSteps } from "./ImageSteps";
+import ImageSteps from "./ImageSteps";
 
-export const ZipSteps = class ZipSteps extends BaseAPI {
+export default class ZipSteps extends BaseAPI {
     request1: APIRequestContext;
 
     public async uploadAZipFile(file) {
@@ -12,7 +12,7 @@ export const ZipSteps = class ZipSteps extends BaseAPI {
         return this.response;
     }
 
-    private async getTheResponseImageList() {
+    public async getTheResponseImageList() {
         const body = JSON.parse(await this.response.text());
         return body.images;
     }

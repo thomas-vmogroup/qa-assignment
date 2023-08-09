@@ -3,12 +3,8 @@ import { BaseAPI } from "../base/BaseAPI";
 import { EndPoint } from "../const/EndPoint";
 import { MimeType } from "../const/MimeType";
 
-export const ImageSteps = class ImageSteps extends BaseAPI {
+export default class ImageSteps extends BaseAPI {
 
-    // constructor() {
-    //     super();
-    // }
-    // response: APIResponse;
     imageLinkRegex = /https:\/\/assessement\.onrender\.com\/images\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}/
 
     public async uploadAnImage(file) {

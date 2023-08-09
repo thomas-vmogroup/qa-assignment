@@ -1,13 +1,7 @@
-import { test } from "@playwright/test";
 import path from "path";
 import { Path } from "../const/Path";
 import { Utilities } from "../util/Utilities"
-import { CommonSteps } from "../steps/CommonSteps";
-import { ImageSteps } from "../steps/ImageSteps";
-
-let commonSteps;
-let imageSteps;
-
+import { test } from "./fixtures/BaseStep";
 
 /*
     User Story 1 - In order to store and use my pictures through the https://assessement.onrender.com/api/image API service: 
@@ -17,9 +11,7 @@ let imageSteps;
 
 
 test.describe('Upload image', () => {
-    test.beforeEach(async ({ request }) => {
-        imageSteps = new ImageSteps(request)
-        commonSteps = new CommonSteps(request);
+    test.beforeEach(async ({ }) => {
     });
 
     const imageList = new Utilities().getFilesFromFolder(Path.IMAGES, []);
@@ -36,7 +28,7 @@ test.describe('Upload image', () => {
         - Verify the image permanent link should be accessible (Call an get request and verify the status code = 200)
     */
     for (const file of imageList) {
-        test(`Should allow guest to upload an image ${file}`, async ({ }) => {
+        test(`Should allow guest to upload an image ${file}`, async ({ imageSteps, commonSteps }) => {
 
             //const file = Util.getRandomItemFromArrayList(imageList);
             console.log(file)
@@ -59,7 +51,7 @@ test.describe('Upload image', () => {
         - Verify the status code should be 403
         - Verify the body response should have "err" field with the message: File isn' an image
     */
-    test('Should not allow guest to upload the file is not a picture', async () => {
+    test('Should not allow guest to upload the file is not a picture', async ({ imageSteps, commonSteps }) => {
         const file = path.resolve(Path.OTHERS, "username.csv");
         const response = await imageSteps.uploadAnImage(file);
         await commonSteps.verifyStatusCodeIs(403, response);

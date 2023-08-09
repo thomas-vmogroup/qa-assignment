@@ -1,17 +1,9 @@
-import { test } from "@playwright/test";
 import path from "path";
 import { Path } from "../const/Path";
 import { Utilities } from "../util/Utilities";
-import { CommonSteps } from "../steps/CommonSteps";
-import { ZipSteps } from "../steps/ZipSteps";
-import { ImageSteps } from "../steps/ImageSteps";
+import { test } from "./fixtures/BaseStep";
 
-
-let Util;
-let commonSteps;
-let zipSteps;
-let imageSteps;
-
+let Util = new Utilities();
 /*
     User Story 2 - In order to save my time from uploading my pictures multiple times via 
     https://assessement.onrender.com/api/zip API service: As an Anonymous user, I want to attach a zip file 
@@ -19,30 +11,27 @@ let imageSteps;
 */
 
 test.describe('Upload zip file', () => {
-    test.beforeEach(async ({ request }) => {
-        zipSteps = new ZipSteps(request)
-        commonSteps = new CommonSteps(request);
-        Util = new Utilities();
-        imageSteps = new ImageSteps(request);
+
+    test.beforeEach(async ({ }) => {
     });
 
 
     /*
-Tescase 01: Should allow guest to upload an zip file contain multiple image files
-Precondition: 
-    - A zip file including the image file is provided
-Test Step: 
-    - Send the post request to upload the zip file
-    - Verify the status code should be 200
-    - Read the input zip file and get the list of file name.
-    - Verify each of file from response body image list should be accessible: Send GET request and validate response code = 200
-    - Verify the permanen file format for each file is coresponding with the zip temp folder:
-        + The number of image files inside the zip file = the number of file from response body
-        + The format of file should be coresponsding
-Postcondition:
-    - temp folder should be deleted
-*/
-    test('Should allow guest to upload an zip file contain multiple image files', async ({ }) => {
+        TC_01: Should allow guest to upload an zip file contain multiple image files
+        Precondition: 
+            - A zip file including the image file is provided
+        Test Step: 
+            - Send the post request to upload the zip file
+            - Verify the status code should be 200
+            - Read the input zip file and get the list of file name.
+            - Verify each of file from response body image list should be accessible: Send GET request and validate response code = 200
+            - Verify the permanen file format for each file is coresponding with the zip temp folder:
+                + The number of image files inside the zip file = the number of file from response body
+                + The format of file should be coresponsding
+        Postcondition:
+            - temp folder should be deleted
+    */
+    test('Should allow guest to upload an zip file contain multiple image files', async ({ zipSteps, commonSteps, imageSteps }) => {
         const zipFilePath = path.resolve(Path.ZIPS, "images-only.zip");
         const lisFileNameFromZipFile = await Util.readZipArchive(zipFilePath)
 
@@ -72,7 +61,7 @@ Postcondition:
         - Verify the status code should be 403
         - Verify the body response should have "err" field with the message: File isn' a zip
     */
-    test('Should not allow guest to upload the file is not a zip', async () => {
+    test('Should not allow guest to upload the file is not a zip', async ({ zipSteps, commonSteps }) => {
         const file = path.resolve(Path.OTHERS, "username.csv");
         const response = await zipSteps.uploadAZipFile(file);
         await commonSteps.verifyStatusCodeIs(403, response);
