@@ -17,7 +17,7 @@ export const ZipSteps = class ZipSteps extends BaseAPI {
         return body.images;
     }
 
-    async verifyLisOfImageAreCorrectFormat() {
+    public async verifyLisOfImageAreCorrectFormat() {
         const responseImageList = await this.getTheResponseImageList();
         const imageStep = new ImageSteps();
         for (var i = 0; i < responseImageList.length; i++) {
@@ -25,7 +25,7 @@ export const ZipSteps = class ZipSteps extends BaseAPI {
         }
     }
 
-    async verifyZipfileAndResponeImagesAreCorresponding(lisFileNameFromZipFile) {
+    public async verifyZipfileAndResponeImagesAreCorresponding(lisFileNameFromZipFile) {
         const responseImageList = await this.getTheResponseImageList();
         expect(lisFileNameFromZipFile.length).toBe(responseImageList.length)
         for (var i = 0; i < responseImageList.length; i++) {
