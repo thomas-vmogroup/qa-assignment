@@ -81,7 +81,7 @@ test.describe('User Story 1| Upload image function', () => {
     Precondition:
         - Any valid image is provided
     Test Step: 
-        - Send the "POST | /api/image" request to upload the image with the wrong endpoint
+        - Send the "POST | /api/wrong" request to upload the image with the wrong endpoint
         - Verify the status code should be 404
     */
     test('Should return an error once guest upload the file with the wrong endpoint', async ({ imageSteps, commonSteps }) => {
